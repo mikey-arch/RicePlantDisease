@@ -1,5 +1,26 @@
-streamlit
 torch==2.6.0
 torchvision
+timm
+transformers
+
+pandas
+numpy
+pillow
+scikit-learn
+
+matplotlib
+seaborn
+tqdm
+
+streamlit
+fastapi
+uvicorn
+
+pathlib
+docker
+
+# albumentations  
+# peft            
+# bitsandbytes    
 
 -e .

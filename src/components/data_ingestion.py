@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from src.components.data_transformation import DataTransformation
+from src.components.model_trainer import ModelTrainer
 
 from src.exception import CustomException
 from src.logger import logging
@@ -135,11 +136,30 @@ class DataIngestion:
             raise CustomException(e, sys)
 
 if __name__ == "__main__":
+    logging.info("Starting Rice Plant Disease Detection Pipeline")
+    
     obj = DataIngestion()
     train_data, test_data = obj.initiate_data_ingestion()
 
     data_transformation = DataTransformation()
     train_loader, test_loader, class_to_idx = data_transformation.initiate_data_transformation(
-    train_data, test_data, batch_size=16)
+        train_data, test_data, batch_size=32
+    )
+    
+    trainer = ModelTrainer()
+    results = trainer.initiate_model_training(
+        train_loader=train_loader,
+        test_loader=test_loader,
+        class_to_idx=class_to_idx,
+        epochs=10,
+        learning_rate=1e-4
+    )
+    
+    logging.info("=== Pipeline Summary ===")
+    if 'best_model' in results:
+        best = results['best_model']
+        logging.info(f"Best Model: {best['name'].upper()} - {best['accuracy']:.2f}% accuracy")
+    
+    logging.info("Pipeline completed successfully!")
 
 
