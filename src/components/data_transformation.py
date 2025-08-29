@@ -82,9 +82,14 @@ class DataTransformation:
         
         return train_transform, val_transform
     
-    def create_datasets(self, train_df, test_df, image_size=224):
+    def create_datasets(self, train_df, test_df, image_size=224, model_type='standard'):
         try:
-            logging.info(f"Creating datasets with image size {image_size}")
+            # Adjust image size for specific models
+            if model_type == 'dinov2':
+                image_size = 518
+                logging.info(f"Using DINOv2 image size: {image_size}")
+            else:
+                logging.info(f"Using standard image size: {image_size}")
             
             # Get transforms
             train_transform, val_transform = self.get_transforms(image_size)

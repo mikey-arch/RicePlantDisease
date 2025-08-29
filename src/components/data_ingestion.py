@@ -6,6 +6,7 @@ from pathlib import Path
 
 from src.components.data_transformation import DataTransformation
 from src.components.model_trainer import ModelTrainer
+from src.components.model_ensemble import ModelEnsemble
 
 from src.exception import CustomException
 from src.logger import logging
@@ -148,18 +149,35 @@ if __name__ == "__main__":
     
     trainer = ModelTrainer()
     results = trainer.initiate_model_training(
-        train_loader=train_loader,
-        test_loader=test_loader,
+        train_df=pd.read_pickle(train_data),
+        test_df=pd.read_pickle(test_data),
         class_to_idx=class_to_idx,
         epochs=10,
         learning_rate=1e-4
     )
     
+    # Model Ensemble Evaluation
+    logging.info("=== Model Ensemble Phase ===")
+    ensemble = ModelEnsemble()
+    ensemble_results = ensemble.initiate_ensemble_evaluation(
+        test_loader=test_loader,
+        weighting_method='accuracy'
+    )
+    
+    # Final Pipeline Summary
     logging.info("=== Pipeline Summary ===")
     if 'best_model' in results:
         best = results['best_model']
-        logging.info(f"Best Model: {best['name'].upper()} - {best['accuracy']:.2f}% accuracy")
+        logging.info(f"Best Individual Model: {best['name'].upper()} - {best['accuracy']:.2f}% accuracy")
     
-    logging.info("Pipeline completed successfully!")
+    if ensemble_results:
+        logging.info(f"Best Ensemble Method: {ensemble_results['best_method']} - {ensemble_results['best_accuracy']:.4f} accuracy")
+        
+        # Calculate improvement
+        best_individual = max(ensemble_results['individual_accuracies'].values())
+        improvement = (ensemble_results['best_accuracy'] * 100) - best_individual
+        logging.info(f"Ensemble improvement: +{improvement:.2f} percentage points")
+    
+    logging.info("Full pipeline completed successfully!")
 
 

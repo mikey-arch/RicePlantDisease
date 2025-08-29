@@ -11,6 +11,7 @@ from tqdm import tqdm
 from src.exception import CustomException
 from src.logger import logging
 from src.utils import save_model_with_metadata, save_classification_report, plot_training_history
+from src.components.data_transformation import DataTransformation
 
 @dataclass
 class ModelTrainerConfig:
@@ -331,11 +332,20 @@ class ModelTrainer:
         
         return val_loss, val_acc, all_preds, all_targets
     
-    def train_model(self, model_type, train_loader, val_loader, num_classes=3, 
+    def train_model(self, model_type, train_df, test_df, num_classes=3, 
                    epochs=10, learning_rate=1e-4):
         """Main training function"""
         try:
             logging.info(f"Starting training for {model_type}")
+            
+            # Create model-specific data loaders
+            data_transformation = DataTransformation()
+            train_dataset, test_dataset, class_to_idx = data_transformation.create_datasets(
+                train_df, test_df, model_type=model_type
+            )
+            train_loader, val_loader = data_transformation.create_dataloaders(
+                train_dataset, test_dataset, batch_size=32
+            )
             
             # Create model
             model = self.get_model(model_type, num_classes)
@@ -424,7 +434,7 @@ class ModelTrainer:
         except Exception as e:
             raise CustomException(e, sys)
     
-    def initiate_model_training(self, train_loader, test_loader, class_to_idx, epochs=10, learning_rate=1e-4):
+    def initiate_model_training(self, train_df, test_df, class_to_idx, epochs=10, learning_rate=1e-4):
         """
         Main method to initiate training for all model types
         """
@@ -445,8 +455,8 @@ class ModelTrainer:
                 try:
                     model_path, best_acc, history = self.train_model(
                         model_type=model_type,
-                        train_loader=train_loader,
-                        val_loader=test_loader,
+                        train_df=train_df,
+                        test_df=test_df,
                         num_classes=num_classes,
                         epochs=epochs,
                         learning_rate=learning_rate
