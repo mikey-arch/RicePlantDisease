@@ -1,0 +1,20 @@
+Ensemble Results - ensemble_weighted_average
+==================================================
+
+Final Accuracy: 0.9806
+
+Individual Model Performance:
+  efficientnet: 90.29%
+  convnext: 97.09%
+  vit: 97.09%
+  swin: 99.03%
+  dinov2: 99.03%
+
+Ensemble Weights:
+  efficientnet: 0.1871
+  convnext: 0.2012
+  vit: 0.2012
+  swin: 0.2052
+  dinov2: 0.2052
+
+Improvement over best individual: -0.97 percentage points

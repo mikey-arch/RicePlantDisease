@@ -1,0 +1,17 @@
+Classification Report for best_ensemble_weighted_average
+==================================================
+                 precision    recall  f1-score   support
+
+Bacterialblight       1.00      1.00      1.00        43
+      Brownspot       0.95      1.00      0.98        40
+       Leafsmut       1.00      0.90      0.95        20
+
+       accuracy                           0.98       103
+      macro avg       0.98      0.97      0.97       103
+   weighted avg       0.98      0.98      0.98       103
+
+
+Confusion Matrix:
+[[43  0  0]
+ [ 0 40  0]
+ [ 0  2 18]]
