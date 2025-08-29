@@ -1,0 +1,17 @@
+Classification Report for efficientnet
+==================================================
+                 precision    recall  f1-score   support
+
+Bacterialblight       0.91      0.95      0.93        43
+      Brownspot       0.90      0.90      0.90        40
+       Leafsmut       0.83      0.75      0.79        20
+
+       accuracy                           0.89       103
+      macro avg       0.88      0.87      0.87       103
+   weighted avg       0.89      0.89      0.89       103
+
+
+Confusion Matrix:
+[[41  0  2]
+ [ 3 36  1]
+ [ 1  4 15]]

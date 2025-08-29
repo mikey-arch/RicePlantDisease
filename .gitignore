@@ -210,5 +210,6 @@ __marimo__/
 PROJECT_OVERVIEW.md
 artifacts/rice_plant_diseases/
 artifacts/data/
+artifacts/models/
 !artifacts/*.pkl
 !artifacts/*.py
