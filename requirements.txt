@@ -2,6 +2,7 @@ torch==2.6.0
 torchvision
 timm
 transformers
+accelerate
 
 pandas
 numpy
@@ -15,6 +16,7 @@ tqdm
 streamlit
 fastapi
 uvicorn
+plotly
 
 pathlib
 docker

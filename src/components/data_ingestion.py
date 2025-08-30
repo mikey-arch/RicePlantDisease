@@ -51,6 +51,8 @@ class DataIngestion:
     
     def find_image_path(self, filename):
         # filename already includes the class folder (e.g., 'Leafsmut/BLAST1_001.jpg')
+        # Normalize path separators for cross-platform compatibility
+        filename = filename.replace('\\', '/')
         dataset_path = Path(self.ingestion_config.raw_data_path)
         path = dataset_path / filename
         if path.exists():
